@@ -13,19 +13,9 @@ app
     .use(exceptionService.errorHandler) // register generic error handler middleware
     .use(exceptionService.jsonErrorHandler) // register json error handler middleware
     .use(router()) // Use the Router on the sub routes
-    .use(KoaStatic('public')) // server statics
+    .use(KoaStatic('public')); // server statics
     // Bootstrap the server
-    .listen(process.env.PORT || 5100, () =>
-    {
-        console.log('server stared with port 5100');
-
-        console.log();
-        console.log();
-        console.log('=======================Payment Gateway Application StartUp===========================');
-        console.log('\x1b[33m\x1b[4m%s\x1b[0m', 'http://localhost:5100/api/');
-        console.log('=====================================================================');
-        console.log();
-    });
+    module.exports = app.callback();
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to Fake Payment Gateway API! Use /api/v1/payment/card for payments.' });
 });
