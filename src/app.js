@@ -6,33 +6,22 @@ const apiRouter = require('./api');
 
 const app = new Koa();
 
-// Middleware cơ bản
 app.use(koaBody());
 app.use(cors());
 app.use(KoaStatic('public'));
 
-// Welcome route cho root
+// Welcome route for root to prevent 404
 app.use(async (ctx, next) => {
   if (ctx.path === '/' || ctx.path === '') {
-    ctx.status = 200;
-    ctx.body = {
-      message: 'Fake Payment Gateway - Vercel Online',
-      status: 'OK',
-      tip: 'Use POST /api/v1/payment/card for APPost',
-      endpoints: {
-        api_docs: 'GET /api',
-        create_card: 'POST /api/v1/payment/card',
-        get_card: 'GET /api/v1/payment/card',
-      },
-    };
+    ctx.body = 'Fake Payment Gateway is online! Use /api/v1/payment/card for APPost tests.';
     return;
   }
   await next();
 });
 
-// Mount API router đúng cách
+// Mount API router correctly
 app.use(apiRouter.routes());
 app.use(apiRouter.allowedMethods());
 
-// Export cho Vercel
+// Export for Vercel Serverless
 module.exports = app.callback();
