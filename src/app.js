@@ -26,3 +26,6 @@ app
         console.log('=====================================================================');
         console.log();
     });
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to Fake Payment Gateway API! Use /api/v1/payment/card for payments.' });
+});
