@@ -1,22 +1,38 @@
-// src/api/index.js
-const Router = require('koa-router');
-const StatusCodes = require('http-status-codes');
-const { Response } = require('../../types');
+const Koa = require('koa');
+const koaBody = require('koa-body');
+const KoaStatic = require('koa-static');
+const cors = require('@koa/cors');
+const apiRouter = require('./api');
 
-// SỬA TỪ ĐÂY
-const router = new Router();        // ← XÓA object config
-router.prefix('/api');              // ← Dùng .prefix() thay vì truyền vào constructor
-// ĐẾN ĐÂY
+const app = new Koa();
 
-// Phần còn lại giữ nguyên 100%
-router.get('/', async (ctx, next) => {
-  const response = new Response();
-  ctx.response.status = StatusCodes.OK;
-  response.success = true;
-  response.message = "Application Invoked !";
-  // ... giữ nguyên
-  ctx.body = response;
+// Middleware cơ bản
+app.use(koaBody());
+app.use(cors());
+app.use(KoaStatic('public'));
+
+// Welcome route cho root
+app.use(async (ctx, next) => {
+  if (ctx.path === '/' || ctx.path === '') {
+    ctx.status = 200;
+    ctx.body = {
+      message: 'Fake Payment Gateway - Vercel Online',
+      status: 'OK',
+      tip: 'Use POST /api/v1/payment/card for APPost',
+      endpoints: {
+        api_docs: 'GET /api',
+        create_card: 'POST /api/v1/payment/card',
+        get_card: 'GET /api/v1/payment/card',
+      },
+    };
+    return;
+  }
   await next();
 });
 
-module.exports = router; // ← Export instance router
+// Mount API router đúng cách
+app.use(apiRouter.routes());
+app.use(apiRouter.allowedMethods());
+
+// Export cho Vercel
+module.exports = app.callback();
