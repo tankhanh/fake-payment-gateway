@@ -2,26 +2,27 @@ const Koa = require('koa');
 const koaBody = require('koa-body');
 const KoaStatic = require('koa-static');
 const cors = require('@koa/cors');
-const apiRouter = require('./api');
+const router = require('./api');
+const { exceptionService } = require('./services');
 
 const app = new Koa();
 
-app.use(koaBody());
-app.use(cors());
-app.use(KoaStatic('public'));
+app
+    .use(koaBody())
+    .use(cors())
+    .use(exceptionService.errorHandler) // register generic error handler middleware
+    .use(exceptionService.jsonErrorHandler) // register json error handler middleware
+    .use(router()) // Use the Router on the sub routes
+    .use(KoaStatic('public')) // server statics
+    // Bootstrap the server
+    .listen(process.env.PORT || 5100, () =>
+    {
+        console.log('server stared with port 5100');
 
-// Welcome route for root to prevent 404
-app.use(async (ctx, next) => {
-  if (ctx.path === '/' || ctx.path === '') {
-    ctx.body = 'Fake Payment Gateway is online! Use /api/v1/payment/card for APPost tests.';
-    return;
-  }
-  await next();
-});
-
-// Mount API router correctly
-app.use(apiRouter.routes());
-app.use(apiRouter.allowedMethods());
-
-// Export for Vercel Serverless
-module.exports = app.callback();
+        console.log();
+        console.log();
+        console.log('=======================Payment Gateway Application StartUp===========================');
+        console.log('\x1b[33m\x1b[4m%s\x1b[0m', 'http://localhost:5100/api/');
+        console.log('=====================================================================');
+        console.log();
+    });
