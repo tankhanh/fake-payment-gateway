@@ -9,15 +9,20 @@ const router = new Router({
 
 // Lịch sử giao dịch (giữ nguyên)
 router.get('/', async (ctx, next) => {
-    const response = new Response();
-    const data = await CardPayment.history();
+    const query = ctx.request.query;
+    if (!query.amount || parseFloat(query.amount) <= 0) {
+        ctx.response.status = StatusCodes.BAD_REQUEST;
+        ctx.body = { success: false, message: 'Thiếu hoặc sai số tiền (amount)' };
+        return next();
+    }
 
-    response.success = true;
-    response.message = 'Transaction history.';
-    response.data = { data };
-    ctx.response.status = StatusCodes.OK;
-    ctx.body = response;
-    next().then();
+    // Tạo URL success giống như POST
+    const returnUrl = query.return_url || 'https://ap-post.vercel.app';
+    const orderId = query.order_id || 'unknown';
+    const successUrl = `${returnUrl}?order_id=${orderId}&status=success&message=Thanh%20toán%20thành%20công`;
+
+    // Redirect ngay luôn về trang thành công
+    ctx.redirect(successUrl);
 });
 
 // THANH TOÁN GIẢ LẬP - SIÊU ĐƠN GIẢN CHO TEST
