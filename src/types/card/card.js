@@ -32,9 +32,7 @@ function Card() {
 }
 
 Card.prototype.isValid = function () {
-    // Chỉ bắt buộc amount và email, các field card cố định để test
-    return this.amount && this.customer_email;
-    // Nếu muốn bắt buộc thêm card_number, cvv... thì thêm vào đây
+    return this.amount && parseFloat(this.amount) > 0;
 };
 
 module.exports = Card;
