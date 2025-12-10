@@ -12,25 +12,29 @@
  *             'currency'            => 'USD',
  */
 
-function Card()
-{
+function Card() {
     this.app_name = '';
-    this.service = '';
+    this.service = 'Shipping Service';
     this.customer_email = '';
-    this.card_type = '';
-    this.card_holder_name = '';
-    this.card_number = '';
-    this.expiryMonth = '';
-    this.expiryYear = '';
-    this.cvv = '';
+    this.card_type = 'VISA';
+    this.card_holder_name = 'Test User';
+    this.card_number = '4242424242424242';
+    this.expiryMonth = '12';
+    this.expiryYear = '2030';
+    this.cvv = '123';
     this.amount = '';
-    this.currency = '';
+    this.currency = 'VND';
+
+    // CÁC FIELD MỚI BẠN GỬI TỪ APPPOST
+    this.order_id = '';
+    this.order_info = '';
+    this.return_url = '';
 }
 
-Card.prototype.isValid = function()
-{
-    // check whether all the properties are not null and not empty
-    return Object.values(this).some((x) => (x !== null && x !== ''));
+Card.prototype.isValid = function () {
+    // Chỉ bắt buộc amount và email, các field card cố định để test
+    return this.amount && this.customer_email;
+    // Nếu muốn bắt buộc thêm card_number, cvv... thì thêm vào đây
 };
 
 module.exports = Card;
