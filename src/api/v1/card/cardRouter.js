@@ -49,6 +49,10 @@ router.post('/', async (ctx, next) => {
     const body = ctx.request.body;
     const amount = body.amount ? parseFloat(body.amount) : 0;
 
+    console.log("body: " + body);
+    console.log("amount: " + amount);
+    
+
     if (!amount || amount <= 0) {
         ctx.response.status = StatusCodes.BAD_REQUEST;
         ctx.body = { success: false, message: 'Thiếu hoặc sai số tiền (amount)' };
