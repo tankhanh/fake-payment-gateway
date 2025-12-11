@@ -28,7 +28,6 @@ router.get('/', async (ctx, next) =>
 router.post('/', async (ctx, next) =>
 {
     const request = Object.setPrototypeOf(ctx.request.body, Card.prototype);
-
     const response = new Response();
 
     if (!request.isValid())
@@ -66,14 +65,14 @@ router.post('/', async (ctx, next) =>
 
     console.log('data Exists');
 
-    await emailNotificationService.sendReceiptEmail(
-        request.app_name,
-        request.customer_email,
-        request.card_holder_name,
-        request.service,
-        request.amount,
-        request.amount,
-    );
+    // await emailNotificationService.sendReceiptEmail(
+    //     request.app_name,
+    //     request.customer_email,
+    //     request.card_holder_name,
+    //     request.service,
+    //     request.amount,
+    //     request.amount,
+    // );
 
     response.success = true;
     response.message = `Transaction is successful.`;
