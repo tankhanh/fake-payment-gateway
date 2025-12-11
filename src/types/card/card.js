@@ -28,7 +28,7 @@ function Card() {
     // CÁC FIELD MỚI BẠN GỬI TỪ APPPOST
     this.order_id = '';
     this.order_info = '';
-    this.return_url = 'http://localhost:4200/payment-success';  // Fallback URL success (thay bằng domain frontend thật)
+    this.return_url = 'https://ap-post.vercel.app/payment-success';  // Fallback URL success (thay bằng domain frontend thật)
 }
 
 Card.prototype.isValid = function () {
