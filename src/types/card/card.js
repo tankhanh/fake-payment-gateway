@@ -28,11 +28,12 @@ function Card() {
     // CÁC FIELD MỚI BẠN GỬI TỪ APPPOST
     this.order_id = '';
     this.order_info = '';
-    this.return_url = '';
+    this.return_url = 'http://localhost:4200/payment-success';  // Fallback URL success (thay bằng domain frontend thật)
 }
 
 Card.prototype.isValid = function () {
-    return this.amount && parseFloat(this.amount) > 0;
+    // Thêm check fields bắt buộc: amount > 0, và order_id (nếu cần)
+    return this.amount && parseFloat(this.amount) > 0 && this.order_id && this.customer_email;
 };
 
 module.exports = Card;

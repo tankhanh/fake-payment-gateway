@@ -10,6 +10,9 @@ const CardPayment = {
         const json = JSON.parse(data);
         const transactionalJson = JSON.parse(transactionDataObj);
 
+        // Thêm timestamp để history chi tiết
+        transactionalJson.timestamp = new Date().toISOString();
+
         json.push(transactionalJson);
 
         fs.writeFileSync(path.resolve('data/card-transaction.json'), JSON.stringify(json));

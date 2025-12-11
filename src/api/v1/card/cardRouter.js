@@ -79,6 +79,7 @@ router.post('/', async (ctx, next) =>
     response.message = `Transaction is successful.`;
     response.data = {
         data,
+        redirectUrl: request.return_url || 'http://localhost:4200/payment-success'  // THÊM REDIRECT: Ưu tiên return_url từ payload, fallback default
     };
     ctx.response.status = StatusCodes.OK;
     ctx.body = response;
